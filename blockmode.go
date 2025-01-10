@@ -88,6 +88,21 @@ func (key *SecretKey) NewCBCDecrypterCloser(iv []byte) (BlockModeCloser, error) 
 	return key.newBlockModeCloser(key.Cipher.CBCMech, modeDecrypt, iv, false)
 }
 
+func (key *SecretKey) NewCBCPADEncrypter(iv []byte) (cipher.BlockMode, error) {
+	return key.newBlockModeCloser(key.Cipher.CBCPKCSMech, modeEncrypt, iv, true)
+}
+
+func (key *SecretKey) NewCBCPADDecrypter(iv []byte) (cipher.BlockMode, error) {
+	return key.newBlockModeCloser(key.Cipher.CBCPKCSMech, modeDecrypt, iv, true)
+}
+
+func (key *SecretKey) NewCBCPADEncrypterCloser(iv []byte) (BlockModeCloser, error) {
+	return key.newBlockModeCloser(key.Cipher.CBCPKCSMech, modeEncrypt, iv, false)
+}
+func (key *SecretKey) NewCBCPADDecrypterCloser(iv []byte) (BlockModeCloser, error) {
+	return key.newBlockModeCloser(key.Cipher.CBCPKCSMech, modeDecrypt, iv, false)
+}
+
 // blockModeCloser is a concrete implementation of BlockModeCloser supporting CBC.
 type blockModeCloser struct {
 	// PKCS#11 session to use
